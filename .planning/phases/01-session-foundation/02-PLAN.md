@@ -24,7 +24,7 @@ must_haves:
     - "Host can add multiple players before the game starts and the roster updates immediately"
     - "Host can reset the current session without reloading and gets a fresh empty lobby"
     - "Refreshing the page restores the persisted lobby state"
-    - "The UI uses one canonical session store instead of duplicated local component state"
+    - "Creating, adding, and resetting players updates the same lobby without stale duplicate state"
   artifacts:
     - path: "src/features/session/session-provider.tsx"
       provides: "Context provider and hook for the canonical session store"

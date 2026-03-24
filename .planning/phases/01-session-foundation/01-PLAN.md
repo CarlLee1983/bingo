@@ -24,7 +24,7 @@ requirements:
 must_haves:
   truths:
     - "Session snapshot can be saved to localStorage and restored after refresh"
-    - "The session store is a single normalized source of truth"
+    - "Refreshing or resetting always returns to a coherent lobby state"
     - "Reset creates a fresh sessionId and clears the roster instead of mutating the old lobby"
     - "Missing or invalid persisted data falls back to a fresh default session"
   artifacts:
