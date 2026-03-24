@@ -10,10 +10,16 @@ Deliverables:
 - Local state model and persistence
 - Basic screen structure for host and players
 
+Plans:
+- [ ] 01-session-foundation/01-PLAN.md — Bootstrap the static app and canonical session store
+- [ ] 01-session-foundation/02-PLAN.md — Build the host/player shell and reset boundary
+
 Covered requirements:
 - SESS-01
 - SESS-02
 - SESS-03
+
+**Plans:** 2 plans
 
 Verification:
 - Can create a fresh session, add multiple players, and reset without a reload
