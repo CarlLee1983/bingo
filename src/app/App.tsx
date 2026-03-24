@@ -1,8 +1,16 @@
+import { SessionProvider, useSession } from '../features/session/session-provider';
+import { SessionScreen } from '../components/session/SessionScreen';
+
+function SessionApp() {
+  const { session } = useSession();
+
+  return <SessionScreen key={session.sessionId} />;
+}
+
 export default function App() {
   return (
-    <main className="app-shell">
-      <h1>美式賓果</h1>
-      <p>Phase 1 scaffold is ready.</p>
-    </main>
+    <SessionProvider>
+      <SessionApp />
+    </SessionProvider>
   );
 }
