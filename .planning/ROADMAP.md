@@ -12,18 +12,20 @@ Deliverables:
 
 Plans:
 - [x] 01-session-foundation/01-PLAN.md — Bootstrap the static app and canonical session store
-- [ ] 01-session-foundation/02-PLAN.md — Build the host/player shell and reset boundary
+- [x] 01-session-foundation/02-PLAN.md — Build the host/player shell and reset boundary
 
 Covered requirements:
 - SESS-01
 - SESS-02
 - SESS-03
 
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans executed
 
 Verification:
 - Can create a fresh session, add multiple players, and reset without a reload
 - Browser refresh preserves an in-progress local session where appropriate
+
+**Status:** Complete
 
 ## Phase 2 - Card Engine
 
