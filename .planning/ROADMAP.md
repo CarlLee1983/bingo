@@ -11,7 +11,7 @@ Deliverables:
 - Basic screen structure for host and players
 
 Plans:
-- [ ] 01-session-foundation/01-PLAN.md — Bootstrap the static app and canonical session store
+- [x] 01-session-foundation/01-PLAN.md — Bootstrap the static app and canonical session store
 - [ ] 01-session-foundation/02-PLAN.md — Build the host/player shell and reset boundary
 
 Covered requirements:
@@ -19,7 +19,7 @@ Covered requirements:
 - SESS-02
 - SESS-03
 
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Verification:
 - Can create a fresh session, add multiple players, and reset without a reload

@@ -11,7 +11,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [ ] **SESS-01**: Host can create a new game session and add multiple players before the game starts
 - [ ] **SESS-02**: Host can reset the current session and start a fresh round without reloading the page
-- [ ] **SESS-03**: Game state can be saved and restored locally in the browser
+- [x] **SESS-03**: Game state can be saved and restored locally in the browser
 
 ### Cards
 
@@ -79,7 +79,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | SESS-01 | Phase 1 | Pending |
 | SESS-02 | Phase 1 | Pending |
-| SESS-03 | Phase 1 | Pending |
+| SESS-03 | Phase 1 | Complete |
 | CARD-01 | Phase 2 | Pending |
 | CARD-02 | Phase 2 | Pending |
 | CARD-03 | Phase 2 | Pending |
