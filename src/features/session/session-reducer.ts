@@ -4,7 +4,9 @@ import { checkWin } from './win-detection';
 import { WIN_PATTERNS, STANDARD_PATTERN_IDS } from './win-patterns';
 
 function createId() {
-  return crypto.randomUUID();
+  // Short alphanumeric ID (8 characters)
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Avoid ambiguous chars
+  return Array.from({ length: 8 }, () => chars.charAt(Math.floor(Math.random() * chars.length))).join('');
 }
 
 function createPlayer(name: string, joinedAt: number): Player {
@@ -37,6 +39,7 @@ export function createInitialSession(): SessionState {
 function createSession(hostName: string): SessionState {
   const now = Date.now();
   const host = createPlayer(hostName, now);
+  const hostCard = generateCardGrid();
 
   return {
     schemaVersion: 1,
@@ -44,7 +47,9 @@ function createSession(hostName: string): SessionState {
     status: 'lobby',
     hostId: host.id,
     players: [host],
-    cards: {},
+    cards: {
+      [host.id]: hostCard,
+    },
     calledNumbers: [],
     winners: [],
     winningPattern: null,
@@ -56,26 +61,60 @@ function createSession(hostName: string): SessionState {
 
 function addPlayer(state: SessionState, name: string): SessionState {
   const now = Date.now();
+  const player = createPlayer(name, now);
+  const card = generateCardGrid();
 
   return {
     ...state,
     updatedAt: now,
-    players: state.players.concat(createPlayer(name, now)),
+    players: state.players.concat(player),
+    cards: {
+      ...state.cards,
+      [player.id]: card,
+    },
+  };
+}
+
+function rerollPlayerCard(state: SessionState, playerId: string): SessionState {
+  if (state.status !== 'lobby') return state;
+  
+  return {
+    ...state,
+    updatedAt: Date.now(),
+    cards: {
+      ...state.cards,
+      [playerId]: generateCardGrid(),
+    },
   };
 }
 
 function startGame(state: SessionState): SessionState {
   const now = Date.now();
-  const cards: Record<string, BingoCardGrid> = {};
-
+  const cards = { ...state.cards };
+  
   state.players.forEach(player => {
-    cards[player.id] = generateCardGrid();
+    if (!cards[player.id]) {
+      cards[player.id] = generateCardGrid();
+    }
   });
 
   return {
     ...state,
     status: 'active',
     cards,
+    calledNumbers: [],
+    winners: [],
+    winningPattern: null,
+    updatedAt: now,
+  };
+}
+
+function restartGame(state: SessionState): SessionState {
+  const now = Date.now();
+
+  return {
+    ...state,
+    status: 'active',
     calledNumbers: [],
     winners: [],
     winningPattern: null,
@@ -131,8 +170,12 @@ export function sessionReducer(
       return createSession(action.hostName);
     case 'player/add':
       return addPlayer(state, action.name);
+    case 'player/reroll-card':
+      return rerollPlayerCard(state, action.playerId);
     case 'session/start':
       return startGame(state);
+    case 'session/restart':
+      return restartGame(state);
     case 'session/draw':
       return drawNumber(state);
     case 'session/reset':

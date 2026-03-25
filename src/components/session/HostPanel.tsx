@@ -3,7 +3,7 @@ import { useSession } from '../../features/session/session-provider';
 import { getShareableUrl } from '../../features/session/session-sharing';
 
 export function HostPanel() {
-  const { createSession, addPlayer, startSession, drawNumber, resetSession, session, peerId } = useSession();
+  const { createSession, addPlayer, startSession, drawNumber, restartSession, resetSession, session, peerId } = useSession();
   const [hostName, setHostName] = useState('');
   const [playerName, setPlayerName] = useState('');
   const [shareStatus, setShareStatus] = useState<'idle' | 'copied'>('idle');
@@ -85,8 +85,17 @@ export function HostPanel() {
             Draw Next Number
           </button>
           
-          {session.winners.length > 0 && (
-            <p className="empty-state">Game ended. A winner has been found!</p>
+          {(session.winners.length > 0 || session.calledNumbers.length >= 75) && (
+            <div className="stack" style={{ marginTop: '1rem' }}>
+              <p className="empty-state" style={{ textAlign: 'center' }}>Game ended. A winner has been found!</p>
+              <button 
+                type="button" 
+                onClick={restartSession}
+                style={{ background: 'var(--neon-cyan)', color: 'var(--deep-ink)' }}
+              >
+                Quick Restart (Keep Cards)
+              </button>
+            </div>
           )}
         </div>
       )}

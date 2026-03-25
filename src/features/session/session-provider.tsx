@@ -17,8 +17,10 @@ type SessionContextValue = {
   connectToHost(hostPeerId: string): void;
   createSession(hostName: string): void;
   addPlayer(name: string): void;
+  rerollCard(playerId: string): void;
   startSession(): void;
   drawNumber(): void;
+  restartSession(): void;
   resetSession(): void;
   loadSessionFromSnapshot(snapshot: SessionState): void;
 };
@@ -114,11 +116,17 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       addPlayer(name: string) {
         dispatch({ type: 'player/add', name });
       },
+      rerollCard(playerId: string) {
+        dispatch({ type: 'player/reroll-card', playerId });
+      },
       startSession() {
         dispatch({ type: 'session/start' });
       },
       drawNumber() {
         dispatch({ type: 'session/draw' });
+      },
+      restartSession() {
+        dispatch({ type: 'session/restart' });
       },
       resetSession() {
         clearSession();

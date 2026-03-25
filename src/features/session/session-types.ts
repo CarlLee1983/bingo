@@ -32,7 +32,9 @@ export type SessionState = {
 export type SessionAction =
   | { type: 'session/create'; hostName: string }
   | { type: 'player/add'; name: string }
+  | { type: 'player/reroll-card'; playerId: string }
   | { type: 'session/start' }
   | { type: 'session/draw' }
+  | { type: 'session/restart' }
   | { type: 'session/reset' }
   | { type: 'session/load'; snapshot: SessionState };

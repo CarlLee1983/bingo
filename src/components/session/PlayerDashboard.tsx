@@ -6,30 +6,35 @@ import { WinnerAnnouncement } from './WinnerAnnouncement';
 import { PlayerRoster } from './PlayerRoster';
 
 export function PlayerDashboard() {
-  const { session, localPlayerId, setLocalPlayerId } = useSession();
+  const { session, localPlayerId, setLocalPlayerId, rerollCard } = useSession();
   
   const player = session.players.find(p => p.id === localPlayerId);
   if (!player) return null;
 
   const isHost = localPlayerId === session.hostId;
   const isWinner = session.winners.includes(localPlayerId);
+  const hasCard = !!session.cards[localPlayerId!];
 
   return (
     <div className="stack" style={{ gap: '1.5rem' }}>
       <WinnerAnnouncement />
 
       <header className="hero" style={{ textAlign: 'center' }}>
-        <p className="eyebrow">Player View</p>
+        <p className="eyebrow" style={{ background: 'var(--neon-pink)', color: 'white', padding: '2px 8px', transform: 'rotate(-1deg)', display: 'inline-block' }}>
+          Player View
+        </p>
         <h1>{player.name}'s Bingo</h1>
-        {isHost && <span style={{ fontSize: '0.8rem', opacity: 0.6 }}> (You are the Host)</span>}
+        {isHost && <div style={{ fontSize: '0.9rem', fontWeight: 800, marginTop: '0.5rem' }}>👑 YOU ARE THE HOST</div>}
       </header>
 
       {/* Lobby Info for Host: Show how many players are in */}
       {isHost && session.status === 'lobby' && (
-        <section className="panel">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-            <h2 style={{ fontSize: '1.25rem' }}>Current Players</h2>
-            <span className="eyebrow" style={{ fontSize: '0.9rem' }}>{session.players.length} Total</span>
+        <section className="panel" style={{ background: 'var(--neon-yellow)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <h2 style={{ fontSize: '1.5rem' }}>Current Players</h2>
+            <span className="eyebrow" style={{ fontSize: '1rem', background: 'var(--deep-ink)', color: 'white', padding: '4px 12px' }}>
+              {session.players.length} Total
+            </span>
           </div>
           <PlayerRoster />
         </section>
@@ -37,36 +42,64 @@ export function PlayerDashboard() {
 
       {/* Main Section for the Player's own Card */}
       <section className="panel" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginBottom: '1rem' }}>
-           <h2 style={{ fontSize: '1.25rem' }}>Your Card</h2>
-           {isWinner && <strong style={{ color: '#8c5b17' }}>🎉 You Win!</strong>}
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginBottom: '1.5rem', alignItems: 'center' }}>
+           <h2 style={{ fontSize: '1.5rem' }}>
+             {session.status === 'lobby' ? 'Card Preview' : 'Your Card'}
+           </h2>
+           {isWinner && <strong style={{ color: 'var(--neon-pink)', fontSize: '1.25rem' }}>🎉 YOU WIN!</strong>}
         </div>
         
-        {session.status === 'active' && session.cards[localPlayerId!] ? (
-          <BingoCard 
-            grid={session.cards[localPlayerId!]} 
-            calledNumbers={session.calledNumbers}
-          />
+        {hasCard ? (
+          <div className="stack" style={{ alignItems: 'center' }}>
+            <BingoCard 
+              grid={session.cards[localPlayerId!]} 
+              calledNumbers={session.calledNumbers}
+            />
+            
+            {session.status === 'lobby' && (
+              <div className="stack" style={{ marginTop: '2rem', alignItems: 'center' }}>
+                <p style={{ fontWeight: 700, textAlign: 'center' }}>不滿意這張卡片嗎？</p>
+                <button 
+                  onClick={() => rerollCard(localPlayerId!)}
+                  style={{ background: 'var(--neon-cyan)', color: 'var(--deep-ink)' }}
+                >
+                  🎲 重新抽卡 (Reroll)
+                </button>
+              </div>
+            )}
+          </div>
         ) : (
-          <p className="empty-state">Waiting for the host to start the game...</p>
+          <p className="empty-state">Loading your card...</p>
         )}
         
-        <p style={{ fontSize: '0.75rem', opacity: 0.7, marginTop: '1rem' }}>
-          Tap numbers to mark them manually.
-        </p>
+        {session.status === 'active' && (
+          <p style={{ fontSize: '0.875rem', fontWeight: 800, marginTop: '1.5rem', opacity: 0.8 }}>
+            👉 提示：點擊數字手動蓋章。
+          </p>
+        )}
+
+        {session.status === 'lobby' && !isHost && (
+          <div style={{ marginTop: '2rem', padding: '1rem', border: '3px dashed var(--deep-ink)', borderRadius: '12px', textAlign: 'center' }}>
+            <p style={{ margin: 0, fontWeight: 800 }}>等候 Host 開始遊戲...</p>
+          </div>
+        )}
       </section>
 
       {/* Shared Game Information */}
       {session.status === 'active' && (
-        <section className="panel">
+        <section className="panel" style={{ borderLeft: '8px solid var(--neon-pink)' }}>
+          <h2 style={{ marginBottom: '1.5rem' }}>叫號記錄</h2>
           <CallHistory />
         </section>
       )}
 
       {/* Host Controls (Only visible to the Host) */}
       {isHost && (
-        <section className="panel">
-          <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Host Controls</h2>
+        <section className="panel" style={{ border: '4px solid var(--neon-pink)', background: '#fffafa' }}>
+          <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>
+            <span style={{ background: 'var(--neon-pink)', color: 'white', padding: '4px 12px' }}>HOST</span>
+            控制台
+          </h2>
           <HostPanel />
         </section>
       )}

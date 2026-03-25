@@ -14,15 +14,33 @@ export function checkWin(
   calledNumbers: number[], 
   patterns: WinPattern[]
 ): string | null {
+  const wonPatterns = detectWinningLines(grid, calledNumbers, patterns);
+  return wonPatterns.length > 0 ? wonPatterns[0] : null;
+}
+
+/**
+ * Detects ALL winning pattern IDs currently matched by the combination of host and player marks.
+ */
+export function detectWinningLines(
+  grid: BingoCardGrid,
+  calledNumbers: number[],
+  patterns: WinPattern[],
+  userMarked?: Set<number | 'FREE'>
+): string[] {
+  const wonPatternIds: string[] = [];
+
   for (const pattern of patterns) {
-    const isWin = pattern.squares.every(([r, c]) => 
-      isSquareMarked(grid[r][c], calledNumbers)
-    );
-    
+    const isWin = pattern.squares.every(([r, c]) => {
+      const cell = grid[r][c];
+      const isHostMarked = isSquareMarked(cell, calledNumbers);
+      const isUserMarked = userMarked?.has(cell) || false;
+      return isHostMarked || isUserMarked;
+    });
+
     if (isWin) {
-      return pattern.id;
+      wonPatternIds.push(pattern.id);
     }
   }
 
-  return null;
+  return wonPatternIds;
 }
