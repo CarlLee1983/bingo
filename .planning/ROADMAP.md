@@ -140,10 +140,16 @@ Verification:
 - Create 05-02-SUMMARY.md documenting Plan 05-02 execution
 - Verify and confirm PLAT-01 requirement is satisfied
 
+**Plans:**
+- [x] 06-01-PLAN.md — Create 05-01-SUMMARY.md for static assets configuration
+- [x] 06-02-PLAN.md — Create 05-02-SUMMARY.md for SPA routing setup
+
 **Covered requirements:**
 - PLAT-01
 
-**Status:** Planned (Gap Closure)
+**Plans:** 2/2 plans executed
+
+**Status:** Complete
 
 ## Milestone Summary
 
