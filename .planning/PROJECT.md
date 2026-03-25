@@ -10,11 +10,39 @@
 
 用一個靜態、免後端的網頁，讓多人可以快速開始一局公平、清楚、可擴充的美式賓果。
 
+## Current State
+
+**v1.0 SHIPPED** — 2026-03-25
+
+- ✅ Complete American Bingo game engine with session management
+- ✅ Fair card generation (5x5 grid, B-I-N-G-O ranges, free center)
+- ✅ Number calling with duplicate prevention
+- ✅ Automatic win detection with multiple pattern types
+- ✅ Data-driven rules registry for future variants
+- ✅ Static deployment to GitHub Pages (Vite + GitHub Actions)
+- ✅ All 15 v1 requirements shipped
+
+**Tech Stack:** React 19, TypeScript 6, Vite 8, Vitest, GitHub Pages, GitHub Actions
+
 ## Requirements
 
 ### Validated
 
-(None yet - ship to validate)
+- ✓ SESS-01 — Host can create session and add players — v1.0
+- ✓ SESS-02 — Host can reset session without reload — v1.0
+- ✓ SESS-03 — Game state saved/restored locally — v1.0
+- ✓ CARD-01 — Unique randomized 5x5 cards — v1.0
+- ✓ CARD-02 — B-I-N-G-O ranges with free center — v1.0
+- ✓ CARD-03 — No duplicate numbers in card — v1.0
+- ✓ CALL-01 — Random caller without replacement (1-75) — v1.0
+- ✓ CALL-02 — Call history display — v1.0
+- ✓ CALL-03 — Duplicate-call protection — v1.0
+- ✓ WIN-01 — Auto-detect win patterns — v1.0
+- ✓ WIN-02 — Validate claimed bingo — v1.0
+- ✓ WIN-03 — Display winner and pattern — v1.0
+- ✓ RULE-01 — Data-driven patterns — v1.0
+- ✓ RULE-02 — Extensible rules engine — v1.0
+- ✓ PLAT-01 — Static GitHub Pages deployment — v1.0
 
 ### Active
 
