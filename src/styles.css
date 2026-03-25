@@ -243,6 +243,20 @@ button:disabled {
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
+.bingo-card__cell--user-marked {
+  position: relative;
+}
+
+.bingo-card__cell--user-marked::after {
+  content: "";
+  position: absolute;
+  width: 70%;
+  height: 70%;
+  border: 3px solid #8c5b17;
+  border-radius: 50%;
+  opacity: 0.6;
+}
+
 .roster__item--active {
   flex-direction: column;
   align-items: stretch;

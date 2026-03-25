@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { BingoCardGrid } from '../../features/session/session-types';
 import { isSquareMarked } from '../../features/session/win-detection';
 
@@ -10,6 +10,21 @@ interface BingoCardProps {
 const HEADERS = ['B', 'I', 'N', 'G', 'O'];
 
 export const BingoCard: React.FC<BingoCardProps> = ({ grid, calledNumbers }) => {
+  // Local state for manual marking (player's device only)
+  const [userMarked, setUserMarked] = useState<Set<number | 'FREE'>>(new Set());
+
+  const toggleMark = (cell: number | 'FREE') => {
+    setUserMarked(prev => {
+      const next = new Set(prev);
+      if (next.has(cell)) {
+        next.delete(cell);
+      } else {
+        next.add(cell);
+      }
+      return next;
+    });
+  };
+
   return (
     <div className="bingo-card">
       {HEADERS.map(h => (
@@ -21,11 +36,15 @@ export const BingoCard: React.FC<BingoCardProps> = ({ grid, calledNumbers }) => 
       {grid.map((row, rowIndex) => (
         <React.Fragment key={rowIndex}>
           {row.map((cell, colIndex) => {
-            const marked = isSquareMarked(cell, calledNumbers);
+            const hostMarked = isSquareMarked(cell, calledNumbers);
+            const playerMarked = userMarked.has(cell);
+            
             return (
               <div 
                 key={`${rowIndex}-${colIndex}`} 
-                className={`bingo-card__cell ${cell === 'FREE' ? 'bingo-card__cell--free' : ''} ${marked ? 'bingo-card__cell--marked' : ''}`}
+                onClick={() => toggleMark(cell)}
+                style={{ cursor: 'pointer', transition: 'all 0.2s ease' }}
+                className={`bingo-card__cell ${cell === 'FREE' ? 'bingo-card__cell--free' : ''} ${hostMarked ? 'bingo-card__cell--marked' : ''} ${playerMarked && !hostMarked ? 'bingo-card__cell--user-marked' : ''}`}
               >
                 {cell}
               </div>
