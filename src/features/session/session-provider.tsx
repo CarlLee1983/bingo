@@ -1,14 +1,16 @@
-import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useReducer, useState } from 'react';
 import {
   createInitialSession,
   sessionReducer,
 } from './session-reducer';
-import { clearSession, loadSession, saveSession } from './session-storage';
+import { clearSession, loadSession, saveSession, getLocalPlayerId, saveLocalPlayerId } from './session-storage';
 import { decodeSessionFromUrl } from './session-sharing';
 import type { SessionState } from './session-types';
 
 type SessionContextValue = {
   session: SessionState;
+  localPlayerId: string | null;
+  setLocalPlayerId(id: string | null): void;
   createSession(hostName: string): void;
   addPlayer(name: string): void;
   startSession(): void;
@@ -41,14 +43,32 @@ function initializeSession(): SessionState {
 
 export function SessionProvider({ children }: { children: React.ReactNode }) {
   const [session, dispatch] = useReducer(sessionReducer, undefined, initializeSession);
+  const [localPlayerId, setLocalPlayerIdState] = useState<string | null>(getLocalPlayerId());
+
+  const setLocalPlayerId = (id: string | null) => {
+    setLocalPlayerIdState(id);
+    saveLocalPlayerId(id);
+  };
 
   useEffect(() => {
     saveSession(session);
-  }, [session]);
+    
+    // Auto-clear local identity if player is no longer in the session
+    if (localPlayerId && !session.players.some(p => p.id === localPlayerId)) {
+      setLocalPlayerId(null);
+    }
+    
+    // Auto-assign host identity if we are the one who created it and haven't picked someone else
+    if (session.hostId && !localPlayerId && session.players.length === 1 && session.players[0].id === session.hostId) {
+      setLocalPlayerId(session.hostId);
+    }
+  }, [session, localPlayerId]);
 
   const value = useMemo<SessionContextValue>(
     () => ({
       session,
+      localPlayerId,
+      setLocalPlayerId,
       createSession(hostName: string) {
         dispatch({ type: 'session/create', hostName });
       },
@@ -63,13 +83,14 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       },
       resetSession() {
         clearSession();
+        setLocalPlayerId(null);
         dispatch({ type: 'session/reset' });
       },
       loadSessionFromSnapshot(snapshot: SessionState) {
         dispatch({ type: 'session/load', snapshot });
       },
     }),
-    [session],
+    [session, localPlayerId],
   );
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
