@@ -22,7 +22,15 @@ export function IdentityPicker() {
           <button 
             key={player.id} 
             className="roster__item" 
-            style={{ width: '100%', textAlign: 'left', background: 'white' }}
+            style={{ 
+              width: '100%', 
+              textAlign: 'left', 
+              background: 'white', 
+              color: '#2c231e', // Ensure text is dark on white background
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
             onClick={() => setLocalPlayerId(player.id)}
           >
             <span style={{ fontWeight: 600 }}>{player.name}</span>
