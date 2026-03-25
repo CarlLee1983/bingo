@@ -3,7 +3,7 @@ import { useSession } from '../../features/session/session-provider';
 import { getShareableUrl } from '../../features/session/session-sharing';
 
 export function HostPanel() {
-  const { createSession, addPlayer, startSession, drawNumber, resetSession, session } = useSession();
+  const { createSession, addPlayer, startSession, drawNumber, resetSession, session, peerId } = useSession();
   const [hostName, setHostName] = useState('');
   const [playerName, setPlayerName] = useState('');
   const [shareStatus, setShareStatus] = useState<'idle' | 'copied'>('idle');
@@ -22,7 +22,7 @@ export function HostPanel() {
   }
 
   function handleShare() {
-    const url = getShareableUrl(session);
+    const url = getShareableUrl(session, peerId);
     navigator.clipboard.writeText(url).then(() => {
       setShareStatus('copied');
       setShowQRCode(true);
@@ -30,7 +30,7 @@ export function HostPanel() {
     });
   }
 
-  const shareUrl = getShareableUrl(session);
+  const shareUrl = getShareableUrl(session, peerId);
   const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(shareUrl)}`;
 
   return (

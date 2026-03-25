@@ -5,12 +5,16 @@ import {
 } from './session-reducer';
 import { clearSession, loadSession, saveSession, getLocalPlayerId, saveLocalPlayerId } from './session-storage';
 import { decodeSessionFromUrl } from './session-sharing';
+import { syncService } from './sync-service';
 import type { SessionState } from './session-types';
 
 type SessionContextValue = {
   session: SessionState;
   localPlayerId: string | null;
+  peerId: string | null;
+  syncStatus: string;
   setLocalPlayerId(id: string | null): void;
+  connectToHost(hostPeerId: string): void;
   createSession(hostName: string): void;
   addPlayer(name: string): void;
   startSession(): void;
@@ -28,10 +32,6 @@ function initializeSession(): SessionState {
   if (encoded) {
     const decoded = decodeSessionFromUrl(encoded);
     if (decoded) {
-      // Clear URL to prevent re-loading on manual refresh
-      const url = new URL(window.location.href);
-      url.searchParams.delete('s');
-      window.history.replaceState({}, '', url.toString());
       return decoded;
     }
   }
@@ -44,11 +44,40 @@ function initializeSession(): SessionState {
 export function SessionProvider({ children }: { children: React.ReactNode }) {
   const [session, dispatch] = useReducer(sessionReducer, undefined, initializeSession);
   const [localPlayerId, setLocalPlayerIdState] = useState<string | null>(getLocalPlayerId());
+  const [peerId, setPeerId] = useState<string | null>(null);
+  const [syncStatus, setSyncStatus] = useState<string>('Initializing sync...');
 
   const setLocalPlayerId = (id: string | null) => {
     setLocalPlayerIdState(id);
     saveLocalPlayerId(id);
   };
+
+  // Initialize Sync Service
+  useEffect(() => {
+    syncService.init(
+      (remoteState) => dispatch({ type: 'session/load', snapshot: remoteState }),
+      (status) => setSyncStatus(status)
+    ).then(id => {
+      setPeerId(id);
+      
+      // Auto-connect if 'p' param exists
+      const urlParams = new URLSearchParams(window.location.search);
+      const hostPeerId = urlParams.get('p');
+      if (hostPeerId) {
+        syncService.connectToHost(hostPeerId);
+      }
+
+      // Cleanup URL params once processed
+      const url = new URL(window.location.href);
+      if (url.searchParams.has('s') || url.searchParams.has('p')) {
+        url.searchParams.delete('s');
+        url.searchParams.delete('p');
+        window.history.replaceState({}, '', url.toString());
+      }
+    });
+
+    return () => syncService.destroy();
+  }, []);
 
   useEffect(() => {
     saveSession(session);
@@ -58,9 +87,14 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       setLocalPlayerId(null);
     }
     
-    // Auto-assign host identity if we are the one who created it and haven't picked someone else
+    // Auto-assign host identity if we are the one who created it
     if (session.hostId && !localPlayerId && session.players.length === 1 && session.players[0].id === session.hostId) {
       setLocalPlayerId(session.hostId);
+    }
+
+    // HOST BROADCAST: If I am the host, broadcast my state to all connected players
+    if (session.hostId && localPlayerId === session.hostId) {
+      syncService.broadcast(session);
     }
   }, [session, localPlayerId]);
 
@@ -68,7 +102,12 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     () => ({
       session,
       localPlayerId,
+      peerId,
+      syncStatus,
       setLocalPlayerId,
+      connectToHost(hostPeerId: string) {
+        syncService.connectToHost(hostPeerId);
+      },
       createSession(hostName: string) {
         dispatch({ type: 'session/create', hostName });
       },
@@ -90,7 +129,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
         dispatch({ type: 'session/load', snapshot });
       },
     }),
-    [session, localPlayerId],
+    [session, localPlayerId, peerId, syncStatus],
   );
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;

@@ -35,10 +35,14 @@ export function decodeSessionFromUrl(encoded: string): SessionState | null {
 
 /**
  * Generates a full shareable URL for the current session.
+ * Optionally includes a peerId for real-time sync.
  */
-export function getShareableUrl(state: SessionState): string {
+export function getShareableUrl(state: SessionState, peerId?: string | null): string {
   const encoded = encodeSessionToUrl(state);
   const url = new URL(window.location.href);
   url.searchParams.set('s', encoded);
+  if (peerId) {
+    url.searchParams.set('p', peerId);
+  }
   return url.toString();
 }
