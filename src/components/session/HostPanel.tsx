@@ -7,6 +7,7 @@ export function HostPanel() {
   const [hostName, setHostName] = useState('');
   const [playerName, setPlayerName] = useState('');
   const [shareStatus, setShareStatus] = useState<'idle' | 'copied'>('idle');
+  const [showQRCode, setShowQRCode] = useState(false);
 
   function handleCreateSession(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -24,9 +25,13 @@ export function HostPanel() {
     const url = getShareableUrl(session);
     navigator.clipboard.writeText(url).then(() => {
       setShareStatus('copied');
+      setShowQRCode(true);
       setTimeout(() => setShareStatus('idle'), 2000);
     });
   }
+
+  const shareUrl = getShareableUrl(session);
+  const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(shareUrl)}`;
 
   return (
     <section className="host-panel">
@@ -95,6 +100,29 @@ export function HostPanel() {
         >
           {shareStatus === 'copied' ? 'Link Copied!' : 'Share Session Link'}
         </button>
+
+        {showQRCode && (
+          <div className="stack" style={{ alignItems: 'center', marginTop: '1rem' }}>
+            <div style={{ background: 'white', padding: '12px', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+              <img 
+                src={qrCodeApiUrl} 
+                alt="Session QR Code" 
+                style={{ display: 'block', width: '160px', height: '160px' }}
+              />
+            </div>
+            <p style={{ fontSize: '0.75rem', opacity: 0.8, textAlign: 'center', margin: '0.5rem 0' }}>
+              Friends can scan this code to join!
+            </p>
+            <button 
+              className="button--ghost" 
+              style={{ padding: '4px 12px', fontSize: '0.7rem' }}
+              onClick={() => setShowQRCode(false)}
+            >
+              Hide QR Code
+            </button>
+          </div>
+        )}
+
         <p style={{ fontSize: '0.75rem', opacity: 0.7, textAlign: 'center' }}>
           Copy this link for others to join. Scan the link to sync players & cards.
         </p>
