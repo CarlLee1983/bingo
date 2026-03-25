@@ -3,6 +3,7 @@ import { BingoCard } from './BingoCard';
 import { CallHistory } from './CallHistory';
 import { HostPanel } from './HostPanel';
 import { WinnerAnnouncement } from './WinnerAnnouncement';
+import { PlayerRoster } from './PlayerRoster';
 
 export function PlayerDashboard() {
   const { session, localPlayerId, setLocalPlayerId } = useSession();
@@ -22,6 +23,17 @@ export function PlayerDashboard() {
         <h1>{player.name}'s Bingo</h1>
         {isHost && <span style={{ fontSize: '0.8rem', opacity: 0.6 }}> (You are the Host)</span>}
       </header>
+
+      {/* Lobby Info for Host: Show how many players are in */}
+      {isHost && session.status === 'lobby' && (
+        <section className="panel">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <h2 style={{ fontSize: '1.25rem' }}>Current Players</h2>
+            <span className="eyebrow" style={{ fontSize: '0.9rem' }}>{session.players.length} Total</span>
+          </div>
+          <PlayerRoster />
+        </section>
+      )}
 
       {/* Main Section for the Player's own Card */}
       <section className="panel" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
