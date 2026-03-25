@@ -80,18 +80,18 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SESS-01 | Phase 1 | Complete |
 | SESS-02 | Phase 1 | Complete |
 | SESS-03 | Phase 1 | Complete |
-| CARD-01 | Phase 2 | Pending |
-| CARD-02 | Phase 2 | Pending |
-| CARD-03 | Phase 2 | Pending |
-| CALL-01 | Phase 3 | Pending |
-| CALL-02 | Phase 3 | Pending |
-| CALL-03 | Phase 3 | Pending |
-| WIN-01 | Phase 3 | Pending |
-| WIN-02 | Phase 3 | Pending |
-| WIN-03 | Phase 3 | Pending |
-| RULE-01 | Phase 4 | Pending |
-| RULE-02 | Phase 4 | Pending |
-| PLAT-01 | Phase 5 | Pending |
+| CARD-01 | Phase 2 | Complete |
+| CARD-02 | Phase 2 | Complete |
+| CARD-03 | Phase 2 | Complete |
+| CALL-01 | Phase 3 | Complete |
+| CALL-02 | Phase 3 | Complete |
+| CALL-03 | Phase 3 | Complete |
+| WIN-01 | Phase 3 | Complete |
+| WIN-02 | Phase 3 | Complete |
+| WIN-03 | Phase 3 | Complete |
+| RULE-01 | Phase 4 | Complete |
+| RULE-02 | Phase 4 | Complete |
+| PLAT-01 | Phase 5 (doc: Phase 6) | In Verification |
 
 **Coverage:**
 - v1 requirements: 15 total
