@@ -1,10 +1,12 @@
 import { FormEvent, useState } from 'react';
 import { useSession } from '../../features/session/session-provider';
+import { getShareableUrl } from '../../features/session/session-sharing';
 
 export function HostPanel() {
-  const { createSession, addPlayer, startSession, resetSession, session } = useSession();
+  const { createSession, addPlayer, startSession, drawNumber, resetSession, session } = useSession();
   const [hostName, setHostName] = useState('');
   const [playerName, setPlayerName] = useState('');
+  const [shareStatus, setShareStatus] = useState<'idle' | 'copied'>('idle');
 
   function handleCreateSession(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -16,6 +18,14 @@ export function HostPanel() {
     event.preventDefault();
     addPlayer(playerName);
     setPlayerName('');
+  }
+
+  function handleShare() {
+    const url = getShareableUrl(session);
+    navigator.clipboard.writeText(url).then(() => {
+      setShareStatus('copied');
+      setTimeout(() => setShareStatus('idle'), 2000);
+    });
   }
 
   return (
@@ -76,7 +86,21 @@ export function HostPanel() {
         </div>
       )}
 
-      <button className="button--ghost" type="button" onClick={resetSession}>
+      <div className="stack" style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(85,58,26,0.1)' }}>
+        <button 
+          className="button--primary" 
+          type="button" 
+          onClick={handleShare}
+          disabled={!session.hostId}
+        >
+          {shareStatus === 'copied' ? 'Link Copied!' : 'Share Session Link'}
+        </button>
+        <p style={{ fontSize: '0.75rem', opacity: 0.7, textAlign: 'center' }}>
+          Copy this link for others to join. Scan the link to sync players & cards.
+        </p>
+      </div>
+
+      <button className="button--ghost" type="button" onClick={resetSession} style={{ marginTop: '2rem' }}>
         Reset session
       </button>
     </section>
