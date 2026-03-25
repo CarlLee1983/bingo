@@ -76,6 +76,9 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
         url.searchParams.delete('p');
         window.history.replaceState({}, '', url.toString());
       }
+    }).catch(err => {
+      console.error('Failed to initialize SyncService:', err);
+      setSyncStatus('Sync unavailable (check connection)');
     });
 
     return () => syncService.destroy();

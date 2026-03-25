@@ -28,40 +28,58 @@ function hasValidSnapshotShape(value: unknown): value is SessionState {
 }
 
 export function loadSession(): SessionState | null {
-  const raw = localStorage.getItem(SESSION_STORAGE_KEY);
-  if (!raw) {
-    return null;
-  }
-
   try {
+    const raw = localStorage.getItem(SESSION_STORAGE_KEY);
+    if (!raw) {
+      return null;
+    }
+
     const parsed: unknown = JSON.parse(raw);
     if (!hasValidSnapshotShape(parsed)) {
       return null;
     }
 
     return parsed;
-  } catch {
+  } catch (error) {
+    console.warn('LocalStorage error during loadSession:', error);
     return null;
   }
 }
 
 export function saveSession(snapshot: SessionState): void {
-  localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(snapshot));
+  try {
+    localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(snapshot));
+  } catch (error) {
+    console.warn('LocalStorage error during saveSession:', error);
+  }
 }
 
 export function saveLocalPlayerId(id: string | null): void {
-  if (id) {
-    localStorage.setItem(LOCAL_PLAYER_ID_KEY, id);
-  } else {
-    localStorage.removeItem(LOCAL_PLAYER_ID_KEY);
+  try {
+    if (id) {
+      localStorage.setItem(LOCAL_PLAYER_ID_KEY, id);
+    } else {
+      localStorage.removeItem(LOCAL_PLAYER_ID_KEY);
+    }
+  } catch (error) {
+    console.warn('LocalStorage error during saveLocalPlayerId:', error);
   }
 }
 
 export function getLocalPlayerId(): string | null {
-  return localStorage.getItem(LOCAL_PLAYER_ID_KEY);
+  try {
+    return localStorage.getItem(LOCAL_PLAYER_ID_KEY);
+  } catch (error) {
+    console.warn('LocalStorage error during getLocalPlayerId:', error);
+    return null;
+  }
 }
 
 export function clearSession(): void {
-  localStorage.removeItem(SESSION_STORAGE_KEY);
-  localStorage.removeItem(LOCAL_PLAYER_ID_KEY);
+  try {
+    localStorage.removeItem(SESSION_STORAGE_KEY);
+    localStorage.removeItem(LOCAL_PLAYER_ID_KEY);
+  } catch (error) {
+    console.warn('LocalStorage error during clearSession:', error);
+  }
 }
