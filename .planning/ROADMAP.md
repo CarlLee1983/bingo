@@ -37,14 +37,22 @@ Deliverables:
 - Duplicate prevention within a card
 - Player card rendering and card state representation
 
+Plans:
+- [x] 02-card-engine/01-PLAN.md — Implement the core American Bingo card generation logic and integrate it into the session state using TDD.
+- [x] 02-card-engine/02-PLAN.md — Render the 5x5 Bingo cards in the UI and provide a "Start Game" control for the host.
+
 Covered requirements:
 - CARD-01
 - CARD-02
 - CARD-03
 
+**Plans:** 2/2 plans executed
+
 Verification:
 - Generated cards are unique per player and structurally valid
 - Number ranges match standard American bingo rules
+
+**Status:** Complete
 
 ## Phase 3 - Call Flow and Win Detection
 
@@ -57,6 +65,10 @@ Deliverables:
 - Pattern-based win engine
 - Claim validation and winner announcement
 
+Plans:
+- [x] 03-call-flow/01-PLAN.md — Implement core calling logic and win detection engine via TDD.
+- [x] 03-call-flow/02-PLAN.md — Integrate calling UI, history display, and winner announcements.
+
 Covered requirements:
 - CALL-01
 - CALL-02
@@ -65,10 +77,14 @@ Covered requirements:
 - WIN-02
 - WIN-03
 
+**Plans:** 2/2 plans executed
+
 Verification:
 - Numbers cannot repeat once called
 - A valid bingo claim is recognized and displayed
 - Standard line patterns are detected correctly
+
+**Status:** Complete
 
 ## Phase 4 - Extensible Rules Layer
 
@@ -79,12 +95,20 @@ Deliverables:
 - Rules registry or equivalent configuration layer
 - Extension points for future variants
 
+Plans:
+- [x] 04-extensible-rules-layer/04-01-PLAN.md — Refactor win detection to be data-driven via a pattern registry.
+- [x] 04-extensible-rules-layer/04-02-PLAN.md — Integrate patterns into session state and UI.
+
 Covered requirements:
 - RULE-01
 - RULE-02
 
+**Plans:** 2/2 plans executed
+
 Verification:
 - A new pattern can be added by configuration rather than changing gameplay flow
+
+**Status:** Complete
 
 ## Phase 5 - Static Deployment
 

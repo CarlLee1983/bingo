@@ -2,14 +2,19 @@ import { useSession } from '../../features/session/session-provider';
 import { HostPanel } from './HostPanel';
 import { PlayerRoster } from './PlayerRoster';
 import { SessionStatus } from './SessionStatus';
+import { CallHistory } from './CallHistory';
+import { WinnerAnnouncement } from './WinnerAnnouncement';
 
 export function SessionScreen() {
   const { session } = useSession();
 
   return (
     <main className="app-shell">
+      <WinnerAnnouncement />
+
       <section className="hero">
-        <p className="eyebrow">American Bingo</p>
+...
+
         <h1>靜態前端賓果局</h1>
         <p className="lede">
           Host 建局、玩家進場、開局後再擴充卡牌與叫號規則。
@@ -20,6 +25,7 @@ export function SessionScreen() {
         <div className="panel panel--primary">
           <SessionStatus />
           <HostPanel />
+          {session.status === 'active' && <CallHistory />}
         </div>
 
         <div className="panel">

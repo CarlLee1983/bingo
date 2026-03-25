@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { clearSession, loadSession, saveSession } from './session-storage';
-import type { SessionState } from './session-types';
+import { clearSession, loadSession, saveSession } from '../session-storage';
+import type { SessionState } from '../session-types';
 
 describe('session storage', () => {
   const snapshot: SessionState = {
@@ -9,6 +9,11 @@ describe('session storage', () => {
     status: 'lobby',
     hostId: 'player-1',
     players: [{ id: 'player-1', name: 'Host', joinedAt: 1 }],
+    cards: {},
+    calledNumbers: [],
+    winners: [],
+    winningPattern: null,
+    activePatternIds: ['row-1', 'row-2', 'row-3', 'row-4', 'row-5', 'column-1', 'column-2', 'column-3', 'column-4', 'column-5', 'diagonal-1', 'diagonal-2', 'four-corners'],
     createdAt: 1,
     updatedAt: 2,
   };

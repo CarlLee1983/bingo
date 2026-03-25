@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Completed 01-PLAN.md
-last_updated: "2026-03-24T14:06:30.180Z"
+status: in-progress
+stopped_at: Completed Phase 4
+last_updated: "2026-03-24T23:30:00.000Z"
 last_activity: 2026-03-24
 progress:
-  total_phases: 1
-  completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
-  percent: 50
+  total_phases: 5
+  completed_phases: 4
+  total_plans: 8
+  completed_plans: 8
+  percent: 80
 ---
 
 # Project State
@@ -21,34 +21,27 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-24)
 
 **Core value:** 用一個靜態、免後端的網頁，讓多人可以快速開始一局公平、清楚、可擴充的美式賓果。
-**Current focus:** Phase 1 - Session Foundation
+**Current focus:** Phase 5 - Static Deployment
 
 ## Current Position
 
-Phase: 01 of 1 (Session Foundation)
-Plan: Not started
-Status: Milestone complete
+Phase: 04 of 5 (Extensible Rules Layer)
+Plan: 04-02 Complete
+Status: Phase complete
 Last activity: 2026-03-24
 
-Progress: [██████████░░░░░░░░░░] 50%
+Progress: [████████████████░░░░] 80%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 1
-- Average duration: 2m 06s
-- Total execution time: 0.03 hours
-
-**By Phase:**
-
-| Phase | Plans | Total | Avg/Plan |
-|-------|-------|-------|----------|
-| 01-session-foundation | 1 | 2 | 2m 06s |
+- Total phases completed: 4
+- Total plans completed: 8
 
 **Recent Trend:**
 
-- Last 5 plans: 2m 06s
+- Phase 4 refactored win detection into a registry-based system.
 - Trend: Stable
 
 ## Accumulated Context
@@ -57,13 +50,13 @@ Progress: [██████████░░░░░░░░░░] 50%
 
 Recent decisions affecting current work:
 
-- [Phase 1] Static-first Vite/React/TypeScript scaffold for GitHub Pages deployment
-- [Phase 1] Normalized session state with versioned `localStorage` snapshot persistence
-- [Phase 1] Reset creates a brand-new lobby snapshot instead of mutating the current session
+- [Phase 4] Data-driven pattern registry in `win-patterns.ts`.
+- [Phase 4] Dynamic pattern lookup in state (`activePatternIds`).
+- [Phase 4] User-friendly winner labels in UI.
 
 ### Pending Todos
 
-None yet.
+- Phase 5: Final production build and deployment configuration.
 
 ### Blockers/Concerns
 
@@ -71,6 +64,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-24 14:02
-Stopped at: Completed 01-PLAN.md
+Last session: 2026-03-24 23:25
+Stopped at: Completed Phase 4
 Resume file: None

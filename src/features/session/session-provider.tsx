@@ -10,6 +10,8 @@ type SessionContextValue = {
   session: SessionState;
   createSession(hostName: string): void;
   addPlayer(name: string): void;
+  startSession(): void;
+  drawNumber(): void;
   resetSession(): void;
 };
 
@@ -35,6 +37,12 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       },
       addPlayer(name: string) {
         dispatch({ type: 'player/add', name });
+      },
+      startSession() {
+        dispatch({ type: 'session/start' });
+      },
+      drawNumber() {
+        dispatch({ type: 'session/draw' });
       },
       resetSession() {
         clearSession();

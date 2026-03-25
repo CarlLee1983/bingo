@@ -7,7 +7,7 @@ function hasValidSnapshotShape(value: unknown): value is SessionState {
     return false;
   }
 
-  const snapshot = value as Partial<SessionState> & { players?: unknown };
+  const snapshot = value as Partial<SessionState> & { players?: unknown; cards?: unknown };
 
   return (
     snapshot.schemaVersion === 1 &&
@@ -15,6 +15,12 @@ function hasValidSnapshotShape(value: unknown): value is SessionState {
     (snapshot.status === 'lobby' || snapshot.status === 'active') &&
     (snapshot.hostId === null || typeof snapshot.hostId === 'string') &&
     Array.isArray(snapshot.players) &&
+    typeof snapshot.cards === 'object' &&
+    snapshot.cards !== null &&
+    Array.isArray(snapshot.calledNumbers) &&
+    Array.isArray(snapshot.winners) &&
+    (snapshot.winningPattern === null || typeof snapshot.winningPattern === 'string') &&
+    Array.isArray(snapshot.activePatternIds) &&
     typeof snapshot.createdAt === 'number' &&
     typeof snapshot.updatedAt === 'number'
   );

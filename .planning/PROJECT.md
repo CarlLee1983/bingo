@@ -54,6 +54,7 @@
 | Static-first frontend only | 符合 GitHub Pages 部署與成本限制 | Pending |
 | Shared local session instead of backend rooms | 保持 v1 可交付性，避免把即時同步綁進初版 | Pending |
 | Data-driven win patterns and rules | 讓後續擴充玩法不必重寫核心邏輯 | Pending |
+| Dedicated __tests__ folders | 將測試與實作邏輯分開存放，提高維護性 | Completed |
 
 ---
 *Last updated: 2026-03-24 after project initialization*

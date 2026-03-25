@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { fireEvent, render, screen, within } from '@testing-library/react';
-import App from './App';
+import App from '../App';
 
 beforeEach(() => {
   localStorage.clear();
