@@ -68,6 +68,28 @@ const createMockSession = (overrides?: Partial<Session>): Session => {
 describe('PlayerDashboard - 叫號功能整合', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+
+    // Mock AudioContext
+    global.AudioContext = vi.fn(() => ({
+      currentTime: 0,
+      state: 'running',
+      destination: {},
+      resume: vi.fn(),
+      createOscillator: vi.fn(() => ({
+        type: 'sine',
+        frequency: { setValueAtTime: vi.fn(), exponentialRampToValueAtTime: vi.fn() },
+        connect: vi.fn(),
+        start: vi.fn(),
+        stop: vi.fn(),
+      })),
+      createGain: vi.fn(() => ({
+        gain: { setValueAtTime: vi.fn(), exponentialRampToValueAtTime: vi.fn() },
+        connect: vi.fn(),
+      })),
+    })) as any;
+
+    // 清理 localStorage
+    localStorage.clear();
   });
 
   it('Host 視圖顯示浮動面板', () => {
