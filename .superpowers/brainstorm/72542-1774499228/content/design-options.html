@@ -1,0 +1,177 @@
+<h2>Bingo 叫號功能設計方案</h2>
+<p class="subtitle">選擇最符合粗獷主義風格的設計</p>
+
+<div class="cards">
+  <div class="card" data-choice="option-a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #ff9d00; padding: 20px; border-radius: 8px; font-family: monospace; font-size: 12px;">
+      <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+        <!-- 浮動面板 -->
+        <div style="background: white; border: 4px solid #1a1a2e; border-radius: 12px; padding: 16px; width: 120px; box-shadow: 4px 4px 0 #1a1a2e;">
+          <div style="text-align: center; margin-bottom: 12px;">
+            <div style="font-size: 10px; color: #888; font-weight: 800;">LATEST</div>
+            <div style="font-size: 32px; font-weight: 900; color: #ff007a;">42</div>
+          </div>
+          <button style="width: 100%; padding: 8px; background: #00f3ff; border: 2px solid #1a1a2e; border-radius: 6px; font-weight: 800; font-size: 11px; cursor: pointer;">DRAW</button>
+        </div>
+        <!-- 卡片 -->
+        <div style="background: #1a1a2e; border-radius: 12px; padding: 12px; width: 140px;">
+          <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px;">
+            <div style="background: #ff007a; color: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border-radius: 4px; font-weight: 800;">B</div>
+            <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid #1a1a2e; border-radius: 4px;">I</div>
+            <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid #1a1a2e; border-radius: 4px;">N</div>
+            <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid #1a1a2e; border-radius: 4px;">G</div>
+            <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid #1a1a2e; border-radius: 4px;">O</div>
+          </div>
+        </div>
+      </div>
+      <div style="padding-top: 12px; border-top: 2px dashed #1a1a2e; text-align: center; font-size: 10px; color: #666;">
+        <strong>HOST VIEW</strong>
+      </div>
+      <div style="margin-top: 16px; padding-top: 16px; border-top: 2px solid #1a1a2e;">
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <!-- 卡片上方號碼區 -->
+          <div style="flex: 1; background: white; border: 3px solid #1a1a2e; border-radius: 8px; padding: 12px; text-align: center;">
+            <div style="font-size: 9px; color: #888; font-weight: 800; margin-bottom: 4px;">CURRENT NUMBER</div>
+            <div style="font-size: 24px; font-weight: 900; color: #ff007a;">42</div>
+          </div>
+          <div style="background: #1a1a2e; border-radius: 8px; padding: 8px; width: 80px;">
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px;">
+              <div style="background: #ff007a; color: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 9px; border-radius: 2px; font-weight: 800;">B</div>
+              <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 9px; border: 1px solid #1a1a2e; border-radius: 2px; font-size: 7px;">I</div>
+              <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 9px; border: 1px solid #1a1a2e; border-radius: 2px; font-size: 7px;">N</div>
+              <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 9px; border: 1px solid #1a1a2e; border-radius: 2px; font-size: 7px;">G</div>
+              <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 9px; border: 1px solid #1a1a2e; border-radius: 2px; font-size: 7px;">O</div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size: 8px; color: #666; margin-top: 8px;">PLAYER VIEW</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>方案 A：頂部號碼條</h3>
+      <p>卡片上方放置清晰的號碼顯示區，Players 一眼就能看到。簡潔高效。</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>優點</h4><ul><li>充分利用空間</li><li>號碼清晰易讀</li><li>布局對稱</li></ul></div>
+        <div class="cons"><h4>缺點</h4><ul><li>卡片上方多了一層</li><li>小屏幕上可能擠壓</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-choice="option-b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #ff9d00; padding: 20px; border-radius: 8px; font-family: monospace; font-size: 12px;">
+      <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+        <!-- 浮動面板 -->
+        <div style="background: white; border: 4px solid #1a1a2e; border-radius: 12px; padding: 16px; width: 120px; box-shadow: 4px 4px 0 #1a1a2e;">
+          <div style="text-align: center; margin-bottom: 12px;">
+            <div style="font-size: 10px; color: #888; font-weight: 800;">LATEST</div>
+            <div style="font-size: 32px; font-weight: 900; color: #ff007a;">42</div>
+          </div>
+          <button style="width: 100%; padding: 8px; background: #00f3ff; border: 2px solid #1a1a2e; border-radius: 6px; font-weight: 800; font-size: 11px; cursor: pointer;">DRAW</button>
+        </div>
+        <!-- 卡片 + 角標 -->
+        <div style="position: relative;">
+          <div style="background: #1a1a2e; border-radius: 12px; padding: 12px; width: 140px;">
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px;">
+              <div style="background: #ff007a; color: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border-radius: 4px; font-weight: 800;">B</div>
+              <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid #1a1a2e; border-radius: 4px;">I</div>
+              <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid #1a1a2e; border-radius: 4px;">N</div>
+              <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid #1a1a2e; border-radius: 4px;">G</div>
+              <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid #1a1a2e; border-radius: 4px;">O</div>
+            </div>
+          </div>
+          <!-- 角標 -->
+          <div style="position: absolute; top: -8px; right: -8px; background: #ff007a; border: 3px solid white; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: white; font-size: 18px; box-shadow: 2px 2px 0 #1a1a2e;">42</div>
+        </div>
+      </div>
+      <div style="padding-top: 12px; border-top: 2px dashed #1a1a2e; text-align: center; font-size: 10px; color: #666;">
+        <strong>HOST VIEW</strong>
+      </div>
+      <div style="margin-top: 16px; padding-top: 16px; border-top: 2px solid #1a1a2e;">
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <!-- 卡片 + 角標 -->
+          <div style="position: relative;">
+            <div style="background: #1a1a2e; border-radius: 8px; padding: 8px; width: 70px;">
+              <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px;">
+                <div style="background: #ff007a; color: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 9px; border-radius: 2px; font-weight: 800;">B</div>
+                <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 9px; border: 1px solid #1a1a2e; border-radius: 2px; font-size: 7px;">I</div>
+                <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 9px; border: 1px solid #1a1a2e; border-radius: 2px; font-size: 7px;">N</div>
+                <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 9px; border: 1px solid #1a1a2e; border-radius: 2px; font-size: 7px;">G</div>
+                <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 9px; border: 1px solid #1a1a2e; border-radius: 2px; font-size: 7px;">O</div>
+              </div>
+            </div>
+            <div style="position: absolute; top: -6px; right: -6px; background: #ff007a; border: 2px solid white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: white; font-size: 12px; box-shadow: 1px 1px 0 #1a1a2e;">42</div>
+          </div>
+          <div style="font-size: 8px; color: #666; flex: 1; padding: 8px; background: rgba(255,255,255,0.5); border-radius: 4px; text-align: center;">
+            <strong>CARD</strong><br/>with badge
+          </div>
+        </div>
+        <div style="font-size: 8px; color: #666; margin-top: 8px;">PLAYER VIEW</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>方案 B：卡片角標</h3>
+      <p>在卡片右上角放置一個醒目的號碼圓球。緊湊且視覺焦點明確。</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>優點</h4><ul><li>不佔額外空間</li><li>視覺焦點突出</li><li>很難忽視</li></ul></div>
+        <div class="cons"><h4>缺點</h4><ul><li>可能遮擋卡片右上角</li><li>密集感較強</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-choice="option-c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #ff9d00; padding: 20px; border-radius: 8px; font-family: monospace; font-size: 12px;">
+      <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+        <!-- 浮動面板 -->
+        <div style="background: white; border: 4px solid #1a1a2e; border-radius: 12px; padding: 16px; width: 120px; box-shadow: 4px 4px 0 #1a1a2e;">
+          <div style="text-align: center; margin-bottom: 12px;">
+            <div style="font-size: 10px; color: #888; font-weight: 800;">LATEST</div>
+            <div style="font-size: 32px; font-weight: 900; color: #ff007a;">42</div>
+          </div>
+          <button style="width: 100%; padding: 8px; background: #00f3ff; border: 2px solid #1a1a2e; border-radius: 6px; font-weight: 800; font-size: 11px; cursor: pointer;">DRAW</button>
+        </div>
+        <!-- 卡片 -->
+        <div style="background: #1a1a2e; border-radius: 12px; padding: 12px; width: 140px;">
+          <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px;">
+            <div style="background: #ff007a; color: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border-radius: 4px; font-weight: 800;">B</div>
+            <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid #1a1a2e; border-radius: 4px;">I</div>
+            <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid #1a1a2e; border-radius: 4px;">N</div>
+            <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid #1a1a2e; border-radius: 4px;">G</div>
+            <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid #1a1a2e; border-radius: 4px;">O</div>
+          </div>
+        </div>
+      </div>
+      <div style="padding-top: 12px; border-top: 2px dashed #1a1a2e; text-align: center; font-size: 10px; color: #666;">
+        <strong>HOST VIEW</strong>
+      </div>
+      <div style="margin-top: 16px; padding-top: 16px; border-top: 2px solid #1a1a2e;">
+        <div style="display: flex; gap: 12px; align-items: flex-start;">
+          <!-- 懸浮號碼球 -->
+          <div style="background: #ff007a; border: 3px solid #1a1a2e; border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: white; font-size: 24px; box-shadow: 3px 3px 0 #1a1a2e; flex-shrink: 0;">42</div>
+          <!-- 卡片 -->
+          <div style="background: #1a1a2e; border-radius: 8px; padding: 8px; width: 70px;">
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px;">
+              <div style="background: #ff007a; color: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 9px; border-radius: 2px; font-weight: 800;">B</div>
+              <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 9px; border: 1px solid #1a1a2e; border-radius: 2px; font-size: 7px;">I</div>
+              <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 9px; border: 1px solid #1a1a2e; border-radius: 2px; font-size: 7px;">N</div>
+              <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 9px; border: 1px solid #1a1a2e; border-radius: 2px; font-size: 7px;">G</div>
+              <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 9px; border: 1px solid #1a1a2e; border-radius: 2px; font-size: 7px;">O</div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size: 8px; color: #666; margin-top: 8px;">PLAYER VIEW</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>方案 C：懸浮號碼球</h3>
+      <p>卡片左側有一個大的號碼圓球。最醒目，最符合粗獷主義風格。</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>優點</h4><ul><li>非常醒目</li><li>符合粗獷風格</li><li>不遮擋卡片</li></ul></div>
+        <div class="cons"><h4>缺點</h4><ul><li>佔用左側空間</li><li>可能與 Host 面板衝突</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p style="margin-top: 2rem; font-size: 0.9rem; color: #666; text-align: center;">
+  <strong>提示：</strong>上面展示的是 Host 視圖（有浮動控制面板）和 Player 視圖的對比
+</p>
