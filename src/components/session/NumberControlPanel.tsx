@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSoundToggle } from '../../hooks/useSoundToggle';
 
 export interface NumberControlPanelProps {
   latestNumber: number | null;
@@ -13,6 +14,8 @@ export const NumberControlPanel: React.FC<NumberControlPanelProps> = ({
   onDrawNumber,
   disabled = false,
 }) => {
+  const { muted, toggle } = useSoundToggle();
+
   return (
     <div className="number-control-panel">
       <div className="number-control-panel__display">
@@ -32,6 +35,14 @@ export const NumberControlPanel: React.FC<NumberControlPanelProps> = ({
       <div style={{ fontSize: '9px', color: '#999', textAlign: 'center' }}>
         {totalNumbers} / 75
       </div>
+      <button
+        className="number-control-panel__mute-button"
+        onClick={toggle}
+        type="button"
+        title={muted ? '開啟音效' : '關閉音效'}
+      >
+        {muted ? '🔇' : '🔊'}
+      </button>
     </div>
   );
 };
