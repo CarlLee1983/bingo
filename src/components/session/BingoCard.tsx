@@ -6,13 +6,16 @@ import { WIN_PATTERNS } from '../../features/session/win-patterns';
 interface BingoCardProps {
   grid: BingoCardGrid;
   calledNumbers: number[];
+  latestNumber?: number | null;
+  isHost?: boolean;
 }
 
 const HEADERS = ['B', 'I', 'N', 'G', 'O'];
 
-export const BingoCard: React.FC<BingoCardProps> = ({ grid, calledNumbers }) => {
+export const BingoCard: React.FC<BingoCardProps> = ({ grid, calledNumbers, latestNumber, isHost }) => {
   const [userMarked, setUserMarked] = useState<Set<number | 'FREE'>>(new Set());
   const [isVisible, setIsVisible] = useState(false);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
 
   // Detect all winning patterns based on both host and player marks
   const winningPatterns = useMemo(() => {
@@ -35,6 +38,14 @@ export const BingoCard: React.FC<BingoCardProps> = ({ grid, calledNumbers }) => 
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    if (latestNumber !== null && latestNumber !== undefined) {
+      setShouldAnimate(true);
+      const timer = setTimeout(() => setShouldAnimate(false), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [latestNumber]);
+
   const toggleMark = (cell: number | 'FREE') => {
     setUserMarked(prev => {
       const next = new Set(prev);
@@ -48,44 +59,57 @@ export const BingoCard: React.FC<BingoCardProps> = ({ grid, calledNumbers }) => 
   };
 
   return (
-    <div className="bingo-card" style={{ 
-      opacity: isVisible ? 1 : 0, 
-      transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-      transition: 'opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)'
-    }}>
-      {HEADERS.map(h => (
-        <div key={h} className="bingo-card__header">
-          {h}
+    <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+      <div className="bingo-card" style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+        transition: 'opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)'
+      }}>
+        {HEADERS.map(h => (
+          <div key={h} className="bingo-card__header">
+            {h}
+          </div>
+        ))}
+
+        {grid.map((row, rowIndex) => (
+          <React.Fragment key={rowIndex}>
+            {row.map((cell, colIndex) => {
+              const hostMarked = isSquareMarked(cell, calledNumbers);
+              const playerMarked = userMarked.has(cell);
+              const isWin = winningSquares.has(`${rowIndex}-${colIndex}`);
+
+              return (
+                <div
+                  key={`${rowIndex}-${colIndex}`}
+                  onClick={() => toggleMark(cell)}
+                  className={`bingo-card__cell
+                    ${cell === 'FREE' ? 'bingo-card__cell--free' : ''}
+                    ${hostMarked ? 'bingo-card__cell--marked' : ''}
+                    ${playerMarked && !hostMarked ? 'bingo-card__cell--user-marked' : ''}
+                    ${isWin ? 'bingo-card__cell--win' : ''}
+                  `}
+                  style={{
+                    transitionDelay: `${(rowIndex * 5 + colIndex) * 20}ms`
+                  }}
+                >
+                  {cell === 'FREE' ? 'FREE\nSPACE' : cell}
+                </div>
+              );
+            })}
+          </React.Fragment>
+        ))}
+      </div>
+
+      {/* 號碼角標 */}
+      {latestNumber !== null && latestNumber !== undefined && (
+        <div
+          className={`bingo-card__number-badge ${
+            shouldAnimate ? 'bingo-card__number-badge--animate' : ''
+          }`}
+        >
+          {latestNumber}
         </div>
-      ))}
-      
-      {grid.map((row, rowIndex) => (
-        <React.Fragment key={rowIndex}>
-          {row.map((cell, colIndex) => {
-            const hostMarked = isSquareMarked(cell, calledNumbers);
-            const playerMarked = userMarked.has(cell);
-            const isWin = winningSquares.has(`${rowIndex}-${colIndex}`);
-            
-            return (
-              <div 
-                key={`${rowIndex}-${colIndex}`} 
-                onClick={() => toggleMark(cell)}
-                className={`bingo-card__cell 
-                  ${cell === 'FREE' ? 'bingo-card__cell--free' : ''} 
-                  ${hostMarked ? 'bingo-card__cell--marked' : ''} 
-                  ${playerMarked && !hostMarked ? 'bingo-card__cell--user-marked' : ''}
-                  ${isWin ? 'bingo-card__cell--win' : ''}
-                `}
-                style={{
-                  transitionDelay: `${(rowIndex * 5 + colIndex) * 20}ms`
-                }}
-              >
-                {cell === 'FREE' ? 'FREE\nSPACE' : cell}
-              </div>
-            );
-          })}
-        </React.Fragment>
-      ))}
+      )}
     </div>
   );
 };
