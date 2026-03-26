@@ -421,6 +421,44 @@ body {
   box-shadow: 0 0 0 var(--deep-ink);
 }
 
+.number-control-panel__mute-button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: transparent;
+  border: 2px solid var(--deep-ink);
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--deep-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  color: var(--deep-ink);
+  line-height: 1;
+}
+
+.number-control-panel__mute-button:hover {
+  background: var(--neon-yellow);
+  transform: translateY(-2px);
+}
+
+.number-control-panel__mute-button:active {
+  transform: translateY(0);
+  box-shadow: 0 0 0 var(--deep-ink);
+}
+
+.number-control-panel__mute-button:focus {
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 2px;
+}
+
+.number-control-panel__mute-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 @media (max-width: 600px) {
   .master-board {
     grid-template-columns: repeat(10, 1fr);
