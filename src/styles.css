@@ -225,6 +225,46 @@ body {
   100% { transform: scale(1) rotate(0deg); opacity: 1; }
 }
 
+/* 號碼角標 - 基礎樣式 */
+.bingo-card__number-badge {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--neon-pink);
+  border: 4px solid var(--deep-ink);
+  color: white;
+  font-weight: 900;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 4px 4px 0 var(--deep-ink);
+  z-index: 10;
+  line-height: 1;
+}
+
+/* 號碼脈動動畫 */
+@keyframes numberPulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 12px var(--neon-pink));
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.bingo-card__number-badge--animate {
+  animation: numberPulse 0.3s ease-out;
+}
 
 .bingo-card__cell--free {
   font-size: clamp(0.5rem, 1.5vw, 0.9rem);
@@ -311,6 +351,76 @@ body {
   to { transform: scale(1.3); }
 }
 
+/* 數字控制面板 - 浮動面板 */
+.number-control-panel {
+  position: fixed;
+  left: var(--space-md);
+  top: 100px;
+  width: 120px;
+  background: white;
+  border: 4px solid var(--deep-ink);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 8px 8px 0 var(--deep-ink);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.number-control-panel__display {
+  text-align: center;
+  width: 100%;
+}
+
+.number-control-panel__label {
+  font-size: 10px;
+  color: #888;
+  font-weight: 800;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.number-control-panel__number {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--neon-pink);
+  line-height: 1;
+  font-family: var(--font-heading);
+}
+
+.number-control-panel__button {
+  width: 100%;
+  padding: 8px;
+  background: var(--neon-cyan);
+  border: 2px solid var(--deep-ink);
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.number-control-panel__button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 2px 2px 0 var(--deep-ink);
+}
+
+.number-control-panel__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.number-control-panel__button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 0 0 var(--deep-ink);
+}
+
 @media (max-width: 600px) {
   .master-board {
     grid-template-columns: repeat(10, 1fr);
@@ -384,5 +494,25 @@ code, pre {
   font-family: var(--font-mono);
   font-weight: 700;
   text-transform: uppercase;
+}
+
+/* 手機版響應式樣式 */
+@media (max-width: 768px) {
+  .bingo-card {
+    position: relative;
+    margin-bottom: 60px; /* 預留角標空間 */
+  }
+
+  .bingo-card__number-badge {
+    position: static;
+    margin: 12px auto 0;
+    top: auto;
+    right: auto;
+  }
+
+  /* 手機版隱藏浮動面板 */
+  .number-control-panel {
+    display: none;
+  }
 }
 
