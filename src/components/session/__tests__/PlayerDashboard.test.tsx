@@ -12,6 +12,21 @@ vi.mock('../../../features/session/session-provider', () => {
   };
 });
 
+// Mock useSound 和 useSoundToggle 鈎子
+vi.mock('../../../hooks/useSound', () => ({
+  useSound: vi.fn(() => ({
+    playDrawSound: vi.fn(),
+    playWinSound: vi.fn(),
+  })),
+}));
+
+vi.mock('../../../hooks/useSoundToggle', () => ({
+  useSoundToggle: vi.fn(() => ({
+    muted: false,
+    toggleMute: vi.fn(),
+  })),
+}));
+
 import { useSession } from '../../../features/session/session-provider';
 import type { Session } from '../../../features/session/session-types';
 

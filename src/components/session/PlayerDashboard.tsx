@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { useSession } from '../../features/session/session-provider';
 import { BingoCard } from './BingoCard';
 import { CallHistory } from './CallHistory';
@@ -5,6 +6,8 @@ import { HostPanel } from './HostPanel';
 import { WinnerAnnouncement } from './WinnerAnnouncement';
 import { PlayerRoster } from './PlayerRoster';
 import { NumberControlPanel } from './NumberControlPanel';
+import { useSound } from '../../hooks/useSound';
+import { useSoundToggle } from '../../hooks/useSoundToggle';
 
 export function PlayerDashboard() {
   const { session, localPlayerId, setLocalPlayerId, rerollCard, drawNumber } = useSession();
@@ -20,6 +23,28 @@ export function PlayerDashboard() {
   const latestNumber = session.calledNumbers.length > 0
     ? session.calledNumbers[session.calledNumbers.length - 1]
     : null;
+
+  // 音效觸發邏輯
+  const { muted } = useSoundToggle();
+  const { playDrawSound, playWinSound } = useSound(muted);
+  const prevCalledCountRef = useRef(session.calledNumbers.length);
+  const prevWinnersRef = useRef(session.winners.length);
+
+  // 骰號音效
+  useEffect(() => {
+    if (session.calledNumbers.length > prevCalledCountRef.current) {
+      playDrawSound();
+    }
+    prevCalledCountRef.current = session.calledNumbers.length;
+  }, [session.calledNumbers.length, playDrawSound]);
+
+  // 贏家音效
+  useEffect(() => {
+    if (session.winners.length > 0 && prevWinnersRef.current === 0) {
+      playWinSound();
+    }
+    prevWinnersRef.current = session.winners.length;
+  }, [session.winners.length, playWinSound]);
 
   return (
     <div className="stack" style={{ gap: '1.5rem' }}>
