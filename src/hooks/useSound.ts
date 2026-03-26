@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
 // 音訊配置常數：包含所有時間、頻率、增益值
 const AUDIO_CONFIG = {
@@ -47,7 +47,7 @@ export function useSound(muted: boolean) {
     return audioCtxRef.current;
   }
 
-  function playDrawSound(): void {
+  const playDrawSound = useCallback(() => {
     if (muted) return;
     const ctx = getCtx();
     const now = ctx.currentTime;
@@ -91,9 +91,9 @@ export function useSound(muted: boolean) {
     gain2.connect(ctx.destination);
     osc2.start(now + AUDIO_CONFIG.DRAW.LAYER2.DELAY);
     osc2.stop(now + AUDIO_CONFIG.DRAW.LAYER2.STOP_TIME);
-  }
+  }, [muted]);
 
-  function playWinSound(): void {
+  const playWinSound = useCallback(() => {
     if (muted) return;
     const ctx = getCtx();
     const now = ctx.currentTime;
@@ -113,7 +113,7 @@ export function useSound(muted: boolean) {
       osc.start(now + start);
       osc.stop(now + start + dur + AUDIO_CONFIG.WIN.NOTE_STOP_OFFSET);
     });
-  }
+  }, [muted]);
 
   return { playDrawSound, playWinSound };
 }
