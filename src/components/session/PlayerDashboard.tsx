@@ -4,16 +4,22 @@ import { CallHistory } from './CallHistory';
 import { HostPanel } from './HostPanel';
 import { WinnerAnnouncement } from './WinnerAnnouncement';
 import { PlayerRoster } from './PlayerRoster';
+import { NumberControlPanel } from './NumberControlPanel';
 
 export function PlayerDashboard() {
-  const { session, localPlayerId, setLocalPlayerId, rerollCard } = useSession();
-  
+  const { session, localPlayerId, setLocalPlayerId, rerollCard, drawNumber } = useSession();
+
   const player = session.players.find(p => p.id === localPlayerId);
   if (!player) return null;
 
   const isHost = localPlayerId === session.hostId;
   const isWinner = session.winners.includes(localPlayerId);
   const hasCard = !!session.cards[localPlayerId!];
+
+  // 計算最新號碼
+  const latestNumber = session.calledNumbers.length > 0
+    ? session.calledNumbers[session.calledNumbers.length - 1]
+    : null;
 
   return (
     <div className="stack" style={{ gap: '1.5rem' }}>
@@ -40,6 +46,16 @@ export function PlayerDashboard() {
         </section>
       )}
 
+      {/* Host 專用：浮動面板 */}
+      {isHost && session.status === 'active' && (
+        <NumberControlPanel
+          latestNumber={latestNumber}
+          totalNumbers={session.calledNumbers.length}
+          onDrawNumber={drawNumber}
+          disabled={session.winners.length > 0 || session.calledNumbers.length >= 75}
+        />
+      )}
+
       {/* Main Section for the Player's own Card */}
       <section className="panel" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginBottom: '1.5rem', alignItems: 'center' }}>
@@ -51,9 +67,11 @@ export function PlayerDashboard() {
         
         {hasCard ? (
           <div className="stack" style={{ alignItems: 'center' }}>
-            <BingoCard 
-              grid={session.cards[localPlayerId!]} 
+            <BingoCard
+              grid={session.cards[localPlayerId!]}
               calledNumbers={session.calledNumbers}
+              latestNumber={latestNumber}
+              isHost={isHost}
             />
             
             {session.status === 'lobby' && (
