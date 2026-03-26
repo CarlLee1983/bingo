@@ -50,8 +50,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload the built dist directory
-          path: './dist'
+          # Upload the built docs directory
+          path: './docs'
 
       - name: Deploy to GitHub Pages
         id: deployment
