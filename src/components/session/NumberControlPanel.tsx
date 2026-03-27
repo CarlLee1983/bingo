@@ -5,6 +5,7 @@ export interface NumberControlPanelProps {
   latestNumber: number | null;
   totalNumbers: number;
   onDrawNumber: () => void;
+  onRestart?: () => void;
   disabled?: boolean;
 }
 
@@ -12,6 +13,7 @@ export const NumberControlPanel: React.FC<NumberControlPanelProps> = ({
   latestNumber,
   totalNumbers,
   onDrawNumber,
+  onRestart,
   disabled = false,
 }) => {
   const { muted, toggle } = useSoundToggle();
@@ -32,7 +34,19 @@ export const NumberControlPanel: React.FC<NumberControlPanelProps> = ({
       >
         Draw
       </button>
-      <div style={{ fontSize: '9px', color: '#999', textAlign: 'center' }}>
+
+      {onRestart && (
+        <button
+          className="number-control-panel__button"
+          onClick={onRestart}
+          type="button"
+          style={{ background: 'var(--neon-pink)', color: 'white', marginTop: '4px', fontSize: '10px', padding: '4px' }}
+        >
+          Restart
+        </button>
+      )}
+
+      <div style={{ fontSize: '9px', color: '#999', textAlign: 'center', marginTop: '4px' }}>
         {totalNumbers} / 75
       </div>
       <button

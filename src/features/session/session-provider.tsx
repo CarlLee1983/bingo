@@ -21,6 +21,7 @@ type SessionContextValue = {
   startSession(): void;
   drawNumber(): void;
   restartSession(): void;
+  newRoundSession(): void;
   resetSession(): void;
   loadSessionFromSnapshot(snapshot: SessionState): void;
 };
@@ -130,6 +131,9 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       },
       restartSession() {
         dispatch({ type: 'session/restart' });
+      },
+      newRoundSession() {
+        dispatch({ type: 'session/new-round' });
       },
       resetSession() {
         clearSession();

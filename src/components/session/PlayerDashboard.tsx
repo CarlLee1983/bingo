@@ -10,7 +10,7 @@ import { useSound } from '../../hooks/useSound';
 import { useSoundToggle } from '../../hooks/useSoundToggle';
 
 export function PlayerDashboard() {
-  const { session, localPlayerId, setLocalPlayerId, rerollCard, drawNumber } = useSession();
+  const { session, localPlayerId, setLocalPlayerId, rerollCard, drawNumber, restartSession } = useSession();
 
   const player = session.players.find(p => p.id === localPlayerId);
   if (!player) return null;
@@ -56,6 +56,10 @@ export function PlayerDashboard() {
         </p>
         <h1>{player.name}'s Bingo</h1>
         {isHost && <div style={{ fontSize: '0.9rem', fontWeight: 800, marginTop: '0.5rem' }}>👑 YOU ARE THE HOST</div>}
+        <div style={{ marginTop: '1rem', fontSize: '0.7rem', opacity: 0.6, display: 'flex', justifyContent: 'center', gap: '1rem' }}>
+          <span>STATUS: <strong data-testid="session-status-value">{session.status}</strong></span>
+          <span>ID: <strong data-testid="session-id">{session.sessionId}</strong></span>
+        </div>
       </header>
 
       {/* Lobby Info for Host: Show how many players are in */}
@@ -64,7 +68,7 @@ export function PlayerDashboard() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
             <h2 style={{ fontSize: '1.5rem' }}>Current Players</h2>
             <span className="eyebrow" style={{ fontSize: '1rem', background: 'var(--deep-ink)', color: 'white', padding: '4px 12px' }}>
-              {session.players.length} Total
+              <span data-testid="player-count">{session.players.length}</span> Total
             </span>
           </div>
           <PlayerRoster />
@@ -77,6 +81,7 @@ export function PlayerDashboard() {
           latestNumber={latestNumber}
           totalNumbers={session.calledNumbers.length}
           onDrawNumber={drawNumber}
+          onRestart={restartSession}
           disabled={session.winners.length > 0 || session.calledNumbers.length >= 75}
         />
       )}

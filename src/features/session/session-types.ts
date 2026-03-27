@@ -36,5 +36,6 @@ export type SessionAction =
   | { type: 'session/start' }
   | { type: 'session/draw' }
   | { type: 'session/restart' }
+  | { type: 'session/new-round' }
   | { type: 'session/reset' }
   | { type: 'session/load'; snapshot: SessionState };

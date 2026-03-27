@@ -122,6 +122,25 @@ function restartGame(state: SessionState): SessionState {
   };
 }
 
+function newRound(state: SessionState): SessionState {
+  const now = Date.now();
+  const cards: Record<string, BingoCardGrid> = {};
+  
+  state.players.forEach(player => {
+    cards[player.id] = generateCardGrid();
+  });
+
+  return {
+    ...state,
+    status: 'active',
+    cards,
+    calledNumbers: [],
+    winners: [],
+    winningPattern: null,
+    updatedAt: now,
+  };
+}
+
 function drawNumber(state: SessionState): SessionState {
   if (state.status !== 'active' || state.winners.length > 0) {
     return state;
@@ -176,6 +195,8 @@ export function sessionReducer(
       return startGame(state);
     case 'session/restart':
       return restartGame(state);
+    case 'session/new-round':
+      return newRound(state);
     case 'session/draw':
       return drawNumber(state);
     case 'session/reset':

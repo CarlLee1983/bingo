@@ -3,7 +3,17 @@ import { useSession } from '../../features/session/session-provider';
 import { getShareableUrl } from '../../features/session/session-sharing';
 
 export function HostPanel() {
-  const { createSession, addPlayer, startSession, drawNumber, restartSession, resetSession, session, peerId } = useSession();
+  const { 
+    createSession, 
+    addPlayer, 
+    startSession, 
+    drawNumber, 
+    restartSession, 
+    newRoundSession,
+    resetSession, 
+    session, 
+    peerId 
+  } = useSession();
   const [hostName, setHostName] = useState('');
   const [playerName, setPlayerName] = useState('');
   const [shareStatus, setShareStatus] = useState<'idle' | 'copied'>('idle');
@@ -85,18 +95,34 @@ export function HostPanel() {
             Draw Next Number
           </button>
           
-          {(session.winners.length > 0 || session.calledNumbers.length >= 75) && (
-            <div className="stack" style={{ marginTop: '1rem' }}>
-              <p className="empty-state" style={{ textAlign: 'center' }}>Game ended. A winner has been found!</p>
+          <div className="stack" style={{ marginTop: '1.5rem', padding: '1rem', border: '2px dashed var(--deep-ink)', borderRadius: '8px', background: 'rgba(255,255,255,0.5)' }}>
+            {session.winners.length > 0 || session.calledNumbers.length >= 75 ? (
+              <p className="empty-state" style={{ textAlign: 'center', marginBottom: '1rem', color: 'var(--neon-pink)' }}>
+                <strong>Game ended. A winner has been found!</strong>
+              </p>
+            ) : (
+              <p style={{ textAlign: 'center', fontSize: '0.8rem', fontWeight: 800, marginBottom: '1rem', opacity: 0.7 }}>
+                想要重新開始嗎？
+              </p>
+            )}
+            
+            <div className="stack" style={{ gap: '0.75rem' }}>
               <button 
                 type="button" 
                 onClick={restartSession}
-                style={{ background: 'var(--neon-cyan)', color: 'var(--deep-ink)' }}
+                style={{ background: 'var(--neon-cyan)', color: 'var(--deep-ink)', fontSize: '0.9rem' }}
               >
-                Quick Restart (Keep Cards)
+                快速重開 (保留原卡)
+              </button>
+              <button 
+                type="button" 
+                onClick={newRoundSession}
+                style={{ background: 'var(--neon-pink)', color: 'white', fontSize: '0.9rem' }}
+              >
+                重開新局 (重新抽卡)
               </button>
             </div>
-          )}
+          </div>
         </div>
       )}
 
